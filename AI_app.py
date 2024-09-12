@@ -2,10 +2,11 @@ import streamlit as st
 import cohere
 import os
 
-API_key = os.environ["COHERE_API_KEY"]
+API_key = os.environ["COHERE_API_KEY"] #load environmental variable for API-key 
 co = cohere.Client(API_key)
 
 def generate_response(concept, role):
+    '''This function takes as input an AI concept and an audience role, makes a prompt for the language model to explain the concept to the correct audience, prompt the LLM and returns the LLM response '''
     PROMPT = f"Concisely explain the AI concept {concept} to someone with the experience of a {role} in the field of artificial intelligence. Do not give an answer if the concept is not related to AI."
     response = co.chat(message=PROMPT)
     return response.text
@@ -19,7 +20,7 @@ with form:
                            "Layman", "12 year old child"),)
     generate_button = form.form_submit_button("Explain AI concept")
     if generate_button:
-        with st.spinner('Wait for it...'):
+        with st.spinner('Wait for it...'): #add a waiting icon while waiting for the response
             response = generate_response(AI_concept, role)
         st.write(response)
 
